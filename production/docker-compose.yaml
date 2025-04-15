@@ -8,7 +8,9 @@ services:
     image: grafana/loki:latest
     ports:
       - "3100:3100"
-    command: -config.file=/home/jake/loki/cmd/loki/loki-local-config.yaml
+    volumes:
+      - /home/jake/loki/cmd/loki:/mnt/config
+    command: -config.file=/mnt/config/loki-local-config.yaml
     networks:
       - loki
 
@@ -17,8 +19,9 @@ services:
     ports:
       - "1514:1514"    
     volumes:
+      - /home/jake/loki/clients/cmd/promtail:/mnt/config
       - /var/log:/var/log
-    command: -config.file=/home/jake/loki/clients/cmd/promtail/promtail-docker-config.yaml
+    command: -config.file=/mnt/config/promtail-docker-config.yaml
     networks:
       - loki
 
